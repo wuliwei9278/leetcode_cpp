@@ -71,3 +71,32 @@ public:
         return res;
     }   
 };
+
+// third way to do inorder traversal: Morris Traversal. See http://www.cnblogs.com/AnnieKim/archive/2013/06/15/morristraversal.html
+class Solution {
+public:
+    vector<int> inorderTraversal(TreeNode *root) {
+        vector<int> res;
+        if (!root) return res;
+        TreeNode *cur, *pre;
+        cur = root;
+        while (cur) {
+            if (cur->left == NULL) {
+                res.push_back(cur->val);
+                cur = cur->right;
+            } else {
+                pre = cur->left;
+                while (pre->right && pre->right != cur) pre = pre->right;
+                if (!pre->right) {
+                    pre->right = cur;
+                    cur = cur->left;
+                } else {
+                    pre->right = NULL;
+                    res.push_back(cur->val);
+                    cur = cur->right;
+                }
+            }
+        }
+        return res;
+    }
+};
